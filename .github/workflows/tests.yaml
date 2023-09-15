@@ -1,0 +1,40 @@
+name: tests
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Auth service
+      - name: Install Auth dependencies
+        run: yarn --cwd ./auth/
+      - name: Run Auth tests
+        run: yarn --cwd ./auth/ test-unit-int
+
+      # Catalog service
+      - name: Install Catalog dependencies
+        run: yarn --cwd ./catalog/
+      - name: Run Catalog tests
+        run: yarn --cwd ./catalog/ test-unit-int
+
+      # Checkout service
+      - name: Install Checkout dependencies
+        run: yarn --cwd ./checkout/
+      - name: Run Checkout tests
+        run: yarn --cwd ./checkout/ test-unit-int
+
+      # Freight service
+      - name: Install Freight dependencies
+        run: yarn --cwd ./freight/
+      - name: Run Freight tests
+        run: yarn --cwd ./freight/ test-unit-int
