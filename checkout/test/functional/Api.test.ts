@@ -10,7 +10,7 @@ describe("api", () => {
 	it("should make a checkout and return a order values when the /checkout endpoint is called with a valid payload ", async () => {
 		const input = {
 			id: uuid(),
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{ id: 1, quantity: 1 },
 				{ id: 2, quantity: 2 },
@@ -30,7 +30,7 @@ describe("api", () => {
 	it("should return a status code 200 when the /checkout endpoint is called with a valid payload", async () => {
 		const input = {
 			id: uuid(),
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{ id: 1, quantity: 1 },
 				{ id: 2, quantity: 2 },

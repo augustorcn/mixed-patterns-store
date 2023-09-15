@@ -18,7 +18,7 @@ describe("checkout usecase", () => {
 	});
 	it("should set a total value in a total property when the Checkout usecase is build with a valid input and the execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -36,7 +36,7 @@ describe("checkout usecase", () => {
 	});
 	it("should set a total value in total property when the Checkout usecase is build with a valid coupon and execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -55,7 +55,7 @@ describe("checkout usecase", () => {
 	});
 	it("should set a total value in total property when the Checkout usecase is build with a inexistent coupon and execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -74,7 +74,7 @@ describe("checkout usecase", () => {
 	});
 	it("should set a total value in total property when the Checkout usecase is build with a expirated coupon and execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -93,7 +93,7 @@ describe("checkout usecase", () => {
 	});
 	it("should throw a exception with the message 'Invalid Quantity' when the Checkout usecase is build with some negative item quantity and the execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -109,7 +109,7 @@ describe("checkout usecase", () => {
 	});
 	it("should throws a exception with the message 'Duplicated Item' when the Checkout usecase is build with a duplicated item and the execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,
@@ -125,7 +125,7 @@ describe("checkout usecase", () => {
 	});
 	it("should set a total value in total property and valid freight in freight property when the Checkout usecase is build with a valid coordinates and the execute method is called", async () => {
 		const input: any = {
-			cpf: "083.891.519-10",
+			cpf: "643.702.360-02",
 			itens: [
 				{
 					id: 1,

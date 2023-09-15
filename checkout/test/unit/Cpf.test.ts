@@ -1,7 +1,7 @@
 import Cpf from "../../src/domain/valueObjects/Cpf";
 
 describe("cpf value object", () => {
-	const invalidCPFs = ["081.891.519-19", "081.891.519-1x", "081.891.519", "081.891.519-1010", "", "092.01", undefined];
+	const invalidCPFs = ["081.891.519-19", "081.811.519-1x", "081.891.519", "081.871.519-1010", "", "092.01", undefined];
 	it.each(invalidCPFs)(
 		"should throw a exception with the message 'Invalid Cpf' when the Cpf value object constructor is called with a invalid cpf value",
 		(cpf: any) => {
