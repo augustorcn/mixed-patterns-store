@@ -4,7 +4,7 @@
 
 # Intro
 
-Implementation of the code produced through the [Clean code And Clean Architecture course](https://branas.io/) from [Rodrigo Branas](https://github.com/rodrigobranas).
+Implementation of the code produced through the [Clean Code And Clean Architecture course](https://branas.io/) from [Rodrigo Branas](https://github.com/rodrigobranas).
 
 ##### Important links
 
