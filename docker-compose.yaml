@@ -1,0 +1,167 @@
+version: '3.1'
+
+services:
+
+  # Rabbitmq broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    env_file:
+      - ./.env
+    # ports:
+    #   - $RABBITMQ_MANAGEMENT_EXTERNAL_PORT:$RABBITMQ_MANAGEMENT_INTERNAL_PORT
+    environment:
+      RABBITMQ_ERLANG_COOKIE: $RABBITMQ_ERLANG_COOKIE
+      RABBITMQ_DEFAULT_USER: $RABBITMQ_DEFAULT_USER
+      RABBITMQ_DEFAULT_PASS: $RABBITMQ_DEFAULT_PASS
+      RABBITMQ_DEFAULT_VHOST: $RABBITMQ_DEFAULT_VHOST
+    networks:
+      - store
+
+  # Auth service
+  auth:
+    image: node
+    tty: true
+    container_name: auth
+    command: bash -c "yarn -y && yarn api"
+    working_dir: /usr/src/app
+    volumes:
+      - ./auth/:/usr/src/app
+    networks:
+      - store
+    depends_on:
+      - auth-postgres
+    ports:
+      - "3001:3000"
+  auth-postgres:
+    image: postgres
+    container_name: auth-postgres
+    env_file:
+      - ./.env
+    volumes:
+      - ./auth/devops/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_PASSWORD: $AUTH_POSTGRES_PASSWORD
+    networks:
+      - store
+
+  # Catalog service
+  catalog:
+    image: node
+    tty: true
+    container_name: catalog
+    command: bash -c "yarn -y && yarn api"
+    working_dir: /usr/src/app
+    volumes:
+      - ./catalog/:/usr/src/app
+    networks:
+      - store
+    depends_on:
+      - catalog-postgres
+    ports:
+      - "3002:3000"
+  catalog-postgres:
+    image: postgres
+    container_name: catalog-postgres
+    env_file:
+      - ./.env
+    volumes:
+      - ./catalog/devops/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_PASSWORD: $CATALOG_POSTGRES_PASSWORD
+    networks:
+      - store
+
+  # Checkout service
+  checkout:
+    image: node
+    tty: true
+    container_name: checkout
+    command: bash -c "yarn -y && yarn api"
+    working_dir: /usr/src/app
+    volumes:
+      - ./checkout/:/usr/src/app
+    networks:
+      - store
+    depends_on:
+      - checkout-postgres
+      - rabbitmq
+      - auth
+      - catalog
+      - freight
+    ports:
+      - "3003:3000"	
+  checkout-postgres:
+    image: postgres
+    container_name: checkout-postgres
+    env_file:
+      - ./.env
+    volumes:
+      - ./checkout/devops/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_PASSWORD: $CHECKOUT_POSTGRES_PASSWORD
+    networks:
+      - store
+
+  # Freight service
+  freight:
+    image: node
+    tty: true
+    container_name: freight
+    command: bash -c "yarn -y && yarn api"
+    working_dir: /usr/src/app
+    volumes:
+      - ./freight/:/usr/src/app
+    networks:
+      - store
+    depends_on:
+      - freight-postgres
+    ports:
+      - "3004:3000"  
+  freight-postgres:
+    image: postgres
+    container_name: freight-postgres
+    env_file:
+      - ./.env
+    volumes:
+      - ./freight/devops/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_PASSWORD: $FREIGHT_POSTGRES_PASSWORD
+    networks:
+      - store
+
+  # Stock service
+  stock:
+    image: node
+    tty: true
+    container_name: stock
+    command: bash -c "yarn -y && yarn api"
+    working_dir: /usr/src/app
+    volumes:
+      - ./stock/:/usr/src/app
+    networks:
+      - store
+    depends_on:
+      - stock-mongo
+      - rabbitmq
+    ports:
+      - "3005:3000"	
+  stock-mongo:
+    image: mongo
+    container_name: stock-mongo
+    env_file:
+      - ./.env
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $STOCK_MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $STOCK_MONGO_INITDB_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: stock
+    volumes:
+      - ./stock/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - store
+
+networks:
+  store:
+    name: store
+    driver: bridge
