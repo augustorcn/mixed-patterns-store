@@ -1,0 +1,21 @@
+import PgPromiseAdapter from "./infra/database/PgPromiseAdapter";
+import HtrtpGatewayFactory from "./infra/factories/HttpGatewayFactory";
+import RepositoryDatabaseFactory from "./infra/factories/RepositoryDatabaseFactory";
+import UsecaseFactory from "./infra/factories/UsecaseFactory";
+import AxiosAdapter from "./infra/http/AxiosAdapter";
+import ExpressAdapter from "./infra/http/ExpressAdapter";
+import HttpController from "./infra/http/HttpController";
+import RabbitMQAdapter from "./infra/queue/RabbitMQAdapter";
+
+const connection = new PgPromiseAdapter();
+connection.connect();
+const repositoryFactory = new RepositoryDatabaseFactory(connection);
+const httpClient = new AxiosAdapter();
+const gatewayFactory = new HtrtpGatewayFactory(httpClient);
+const queue = new RabbitMQAdapter();
+queue.connect();
+const httpServer = new ExpressAdapter();
+new HttpController(httpServer, new UsecaseFactory(repositoryFactory, gatewayFactory, queue));
+const port = 3000;
+httpServer.listen(port);
+console.info(`Checkout service running in port ${port}`);
