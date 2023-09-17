@@ -23,5 +23,6 @@ docker compose up -d
 yarn --cwd ./auth/ test && \
 yarn --cwd ./catalog/ test && \
 yarn --cwd ./checkout/ test && \
-yarn --cwd ./freight/ test
+yarn --cwd ./freight/ test && \
+yarn --cwd ./stock/ test
 ```
