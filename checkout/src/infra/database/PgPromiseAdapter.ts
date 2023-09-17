@@ -1,15 +1,18 @@
-import pgp from "pg-promise";
 import DatabaseConnection from "./DatabaseConnection";
+import pgp from "pg-promise";
+import settings from "../config/PostgresSettings";
 
 export default class PgPromiseAdapter implements DatabaseConnection {
 	connection: any;
 	async connect(): Promise<void> {
-		this.connection = pgp()("postgres://postgres:admin@checkout-postgres:5432/checkout");
+		this.connection = pgp()(
+			`postgres://${settings.user}:${settings.password}@${settings.host}:${settings.port}/${settings.database}`
+		);
 	}
 	async query(statement: string, params: any): Promise<any> {
 		return this.connection.query(statement, params);
 	}
 	async close(): Promise<void> {
-		throw this.connection.$pool.end();
+		await this.connection.$pool.end();
 	}
 }

@@ -6,6 +6,7 @@ import AxiosAdapter from "./infra/http/AxiosAdapter";
 import ExpressAdapter from "./infra/http/ExpressAdapter";
 import HttpController from "./infra/http/HttpController";
 import RabbitMQAdapter from "./infra/queue/RabbitMQAdapter";
+import settings from "./infra/config/HttpServerSettings";
 
 const connection = new PgPromiseAdapter();
 connection.connect();
@@ -16,6 +17,6 @@ const queue = new RabbitMQAdapter();
 queue.connect();
 const httpServer = new ExpressAdapter();
 new HttpController(httpServer, new UsecaseFactory(repositoryFactory, gatewayFactory, queue));
-const port = 3000;
+const port = settings.internalPort;
 httpServer.listen(port);
 console.info(`Checkout service running in port ${port}`);

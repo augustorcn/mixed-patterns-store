@@ -1,5 +1,6 @@
 import Queue from "./Queue";
 import amqp from "amqplib";
+import settings from "../config/RabbitMQSettings";
 
 export default class RabbitMQAdapter implements Queue {
 	connection: any;
@@ -7,7 +8,7 @@ export default class RabbitMQAdapter implements Queue {
 	constructor() {}
 
 	async connect(): Promise<void> {
-		this.connection = await amqp.connect("amqp://admin:admin@rabbitmq:5672");
+		this.connection = await amqp.connect(`amqp://${settings.user}:${settings.password}@${settings.host}:${settings.port}`);
 	}
 	async consume(queueName: string, callback: Function): Promise<void> {
 		const channel = await this.connection.createChannel();

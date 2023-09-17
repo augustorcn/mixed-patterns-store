@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.8'
 
 services:
 
@@ -26,6 +26,8 @@ services:
     image: node
     tty: true
     container_name: auth
+    env_file:
+      - ./.env
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
@@ -35,7 +37,7 @@ services:
     depends_on:
       - auth-postgres
     ports:
-      - "3001:3000"
+      - $AUTH_EXTERNAL_PORT:$AUTH_INTERNAL_PORT
   auth-postgres:
     image: postgres
     container_name: auth-postgres
@@ -53,16 +55,18 @@ services:
     image: node
     tty: true
     container_name: catalog
+    env_file:
+      - ./.env
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
-      - ./catalog/:/usr/src/app
+      - ./:/usr/src/app
     networks:
       - store
     depends_on:
       - catalog-postgres
     ports:
-      - "3002:3000"
+      - $CATALOG_EXTERNAL_PORT:$CATALOG_INTERNAL_PORT
   catalog-postgres:
     image: postgres
     container_name: catalog-postgres
@@ -80,6 +84,8 @@ services:
     image: node
     tty: true
     container_name: checkout
+    env_file:
+      - ./.env
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
@@ -95,7 +101,7 @@ services:
     links: 
       - rabbitmq
     ports:
-      - "3003:3000"	
+      - $CHECKOUT_EXTERNAL_PORT:$CHECKOUT_INTERNAL_PORT	
   checkout-postgres:
     image: postgres
     container_name: checkout-postgres
@@ -113,6 +119,8 @@ services:
     image: node
     tty: true
     container_name: freight
+    env_file:
+      - ./.env
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
@@ -122,7 +130,7 @@ services:
     depends_on:
       - freight-postgres
     ports:
-      - "3004:3000"  
+      - $FREIGHT_EXTERNAL_PORT:$FREIGHT_INTERNAL_PORT  
   freight-postgres:
     image: postgres
     container_name: freight-postgres
@@ -140,6 +148,8 @@ services:
     image: node
     tty: true
     container_name: stock
+    env_file:
+      - ./.env
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
@@ -152,7 +162,7 @@ services:
     links: 
       - rabbitmq
     ports:
-      - "3005:3000"	
+      - $STOCK_EXTERNAL_PORT:$STOCK_INTERNAL_PORT	
   stock-mongo:
     image: mongo
     container_name: stock-mongo
@@ -160,9 +170,9 @@ services:
       - ./.env
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: $STOCK_MONGO_INITDB_ROOT_USERNAME
-      MONGO_INITDB_ROOT_PASSWORD: $STOCK_MONGO_INITDB_ROOT_PASSWORD
-      MONGO_INITDB_DATABASE: stock
+      MONGO_INITDB_ROOT_USERNAME: $STOCK_MONGO_USER
+      MONGO_INITDB_ROOT_PASSWORD: $STOCK_MONGO_PASSWORD
+      MONGO_INITDB_DATABASE: $STOCK_MONGO_DATABASE
     volumes:
       - ./stock/devops/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:

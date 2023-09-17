@@ -1,10 +1,13 @@
 import NoSqlDatabaseConnection from "./NoSqlDatabaseConnection";
 import { MongoClient } from "mongodb";
+import settings from "../config/MongoSettings";
 
 export default class MongoAdapter implements NoSqlDatabaseConnection {
 	connection: any;
 	async connect(): Promise<void> {
-		this.connection = await MongoClient.connect("mongodb://root:root@stock-mongo:27017/stock");
+		this.connection = await MongoClient.connect(
+			`mongodb://${settings.user}:${settings.password}@${settings.host}:${settings.port}/${settings.database}`
+		);
 	}
 	async disconnect(): Promise<void> {
 		await this.connection.close();

@@ -5,6 +5,7 @@ import ExpressAdapter from "./infra/http/ExpressAdapter";
 import HttpController from "./infra/http/HttpController";
 import QueueController from "./infra/queue/QueueController";
 import RabbitMQAdapter from "./infra/queue/RabbitMQAdapter";
+import settings from "./infra/config/HttpServerSettings";
 
 const connection = new MongoAdapter();
 connection.connect();
@@ -14,7 +15,7 @@ queue.connect();
 const usecaseFactory = new UsecaseFactory(repositoryFactory);
 const httpServer = new ExpressAdapter();
 new HttpController(httpServer, usecaseFactory);
-const port = 3000;
+const port = settings.internalPort;
 httpServer.listen(port);
 console.info(`Stock service running in port ${port}`);
 // new QueueController(queue, usecaseFactory);
