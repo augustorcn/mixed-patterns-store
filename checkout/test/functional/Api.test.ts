@@ -24,7 +24,6 @@ describe("api", () => {
 		const createdOrder = { freight: 351.6642356638367, total: 8351.664235663837 };
 		const response = await axios.post("http://localhost:3003/checkout", input);
 		const output = response.data;
-		console.info(createdOrder);
 		expect(output).toStrictEqual(createdOrder);
 	});
 	it("should return a status code 200 when the /checkout endpoint is called with a valid payload", async () => {
