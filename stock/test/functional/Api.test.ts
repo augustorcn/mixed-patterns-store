@@ -22,7 +22,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual(20);
 	});
-	it("should return a status code 404 when the invalid route is called", async () => {
+	it("GET /invalid/route - should return a status code 404 when the invalid route is called", async () => {
 		const response = await axios.get("http://localhost:3005/invalid/route");
 		expect(response.status).toBe(404);
 	});
