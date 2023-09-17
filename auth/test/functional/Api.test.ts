@@ -6,7 +6,7 @@ describe("api", () => {
 			return true;
 		};
 	});
-	it("should signup a user when the /signup endpoint is called with a valid payload", async () => {
+	it("POST /signup - should signup a user when the /signup endpoint is called with a valid payload", async () => {
 		const input = {
 			email: "teste@teste.com",
 			password: "123",
@@ -15,7 +15,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual("");
 	});
-	it("should return a status code 200 when the /signup endpoint is called with a valid payload", async () => {
+	it("POST /signup - should return a status code 200 when the /signup endpoint is called with a valid payload", async () => {
 		const input = {
 			email: "teste@teste.com",
 			password: "123",
@@ -23,7 +23,7 @@ describe("api", () => {
 		const response = await axios.post("http://localhost:3001/signup", input);
 		expect(response.status).toBe(200);
 	});
-	it("should return a user token when the /login endpoint is called with a valid payload", async () => {
+	it("POST /login - should return a user token when the /login endpoint is called with a valid payload", async () => {
 		const input = {
 			email: "teste@teste.com",
 			password: "123",
@@ -36,7 +36,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual(userToken);
 	});
-	it("should return a status code 200 when the /login endpoint is called with a valid payload", async () => {
+	it("POST /login - should return a status code 200 when the /login endpoint is called with a valid payload", async () => {
 		const input = {
 			email: "teste@teste.com",
 			password: "123",
@@ -45,7 +45,7 @@ describe("api", () => {
 		const response = await axios.post("http://localhost:3001/login", input);
 		expect(response.status).toBe(200);
 	});
-	it("should return a user email when the /verify endpoint is called with a valid payload", async () => {
+	it("POST /verify - should return a user email when the /verify endpoint is called with a valid payload", async () => {
 		const input = {
 			token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSIsImlhdCI6MSwiZXhwaXJlc0luIjoxMDAwMDAwMDAwfQ.HxvR-4JAu9gHO1lbHZ6OYTr3Bh_bajsmCHNHp4nLvo0",
 		};
@@ -54,7 +54,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual(userEmail);
 	});
-	it("should return a status code 200 when the /verify endpoint is called with a valid payload", async () => {
+	it("POST /verify - should return a status code 200 when the /verify endpoint is called with a valid payload", async () => {
 		const input = {
 			token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSIsImlhdCI6MSwiZXhwaXJlc0luIjoxMDAwMDAwMDAwfQ.HxvR-4JAu9gHO1lbHZ6OYTr3Bh_bajsmCHNHp4nLvo0",
 		};

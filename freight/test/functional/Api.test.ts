@@ -6,7 +6,7 @@ describe("api", () => {
 			return true;
 		};
 	});
-	it("should return a list of products when the /simulateFreight endpoint is called with a valid payload", async () => {
+	it("POST /simulateFreight - should return a list of products when the /simulateFreight endpoint is called with a valid payload", async () => {
 		const input = {
 			itens: [{ volume: 10, density: 10, quantity: 1 }],
 			from: "20202020",
@@ -17,7 +17,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual(simulatedFreight);
 	});
-	it("should return a status code 200 when the /simulateFreight endpoint is called with a valid payload", async () => {
+	it("POST /simulateFreight - should return a status code 200 when the /simulateFreight endpoint is called with a valid payload", async () => {
 		const input = {
 			itens: [{ volume: 10, density: 10, quantity: 1 }],
 			from: "20202020",

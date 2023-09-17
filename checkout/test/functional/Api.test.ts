@@ -7,7 +7,7 @@ describe("api", () => {
 			return true;
 		};
 	});
-	it("should make a checkout and return a order values when the /checkout endpoint is called with a valid payload ", async () => {
+	it("POST /checkout - should make a checkout and return a order values when the /checkout endpoint is called with a valid payload ", async () => {
 		const input = {
 			id: uuid(),
 			cpf: "643.702.360-02",
@@ -26,7 +26,7 @@ describe("api", () => {
 		const output = response.data;
 		expect(output).toStrictEqual(createdOrder);
 	});
-	it("should return a status code 200 when the /checkout endpoint is called with a valid payload", async () => {
+	it("POST /checkout - should return a status code 200 when the /checkout endpoint is called with a valid payload", async () => {
 		const input = {
 			id: uuid(),
 			cpf: "643.702.360-02",

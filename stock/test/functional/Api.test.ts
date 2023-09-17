@@ -6,7 +6,7 @@ describe("api", () => {
 			return true;
 		};
 	});
-	it("should return a status code 200 when the /decreaseStock endpoint is called with a valid payload", async () => {
+	it("POST /decreaseStock - should return a status code 200 when the /decreaseStock endpoint is called with a valid payload", async () => {
 		const input = {
 			items: [
 				{ idProduct: 1, quantity: 5 },
@@ -16,7 +16,7 @@ describe("api", () => {
 		const response = await axios.post("http://localhost:3005/decreaseStock", input);
 		expect(response.status).toBe(200);
 	});
-	it("should return a calculated stock from a product when the /getStock endpoint is called with a valid parameters", async () => {
+	it("GET /getStock/:idProduct - should return a calculated stock from a product when the /getStock endpoint is called with a valid parameters", async () => {
 		const idProduct = 2;
 		const response = await axios.get(`http://localhost:3005/getStock/${idProduct}`);
 		const output = response.data;
