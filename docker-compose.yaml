@@ -8,13 +8,16 @@ services:
     container_name: rabbitmq
     env_file:
       - ./.env
-    # ports:
-    #   - $RABBITMQ_MANAGEMENT_EXTERNAL_PORT:$RABBITMQ_MANAGEMENT_INTERNAL_PORT
     environment:
       RABBITMQ_ERLANG_COOKIE: $RABBITMQ_ERLANG_COOKIE
       RABBITMQ_DEFAULT_USER: $RABBITMQ_DEFAULT_USER
       RABBITMQ_DEFAULT_PASS: $RABBITMQ_DEFAULT_PASS
       RABBITMQ_DEFAULT_VHOST: $RABBITMQ_DEFAULT_VHOST
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - store
 
@@ -84,11 +87,13 @@ services:
     networks:
       - store
     depends_on:
-      - checkout-postgres
       - rabbitmq
+      - checkout-postgres
       - auth
       - catalog
       - freight
+    links: 
+      - rabbitmq
     ports:
       - "3003:3000"	
   checkout-postgres:
@@ -142,7 +147,9 @@ services:
     networks:
       - store
     depends_on:
+      - rabbitmq
       - stock-mongo
+    links: 
       - rabbitmq
     ports:
       - "3005:3000"	
@@ -157,7 +164,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: $STOCK_MONGO_INITDB_ROOT_PASSWORD
       MONGO_INITDB_DATABASE: stock
     volumes:
-      - ./stock/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./stock/devops/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - store
 
