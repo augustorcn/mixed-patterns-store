@@ -38,3 +38,9 @@ jobs:
         run: yarn --cwd ./freight/
       - name: Run Freight tests
         run: yarn --cwd ./freight/ test-unit-int
+
+      # Stock  service
+      - name: Install Stock dependencies
+        run: yarn --cwd ./stock/
+      - name: Run Stock tests
+        run: yarn --cwd ./stock/ test-unit-int
