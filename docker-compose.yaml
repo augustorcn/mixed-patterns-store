@@ -24,7 +24,6 @@ services:
   # Auth service
   auth:
     image: node
-    tty: true
     container_name: auth
     env_file:
       - ./.env
@@ -53,7 +52,6 @@ services:
   # Catalog service
   catalog:
     image: node
-    tty: true
     container_name: catalog
     env_file:
       - ./.env
@@ -82,7 +80,6 @@ services:
   # Checkout service
   checkout:
     image: node
-    tty: true
     container_name: checkout
     env_file:
       - ./.env
@@ -117,7 +114,6 @@ services:
   # Freight service
   freight:
     image: node
-    tty: true
     container_name: freight
     env_file:
       - ./.env
@@ -146,7 +142,6 @@ services:
   # Stock service
   stock:
     image: node
-    tty: true
     container_name: stock
     env_file:
       - ./.env
