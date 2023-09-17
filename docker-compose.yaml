@@ -58,7 +58,7 @@ services:
     command: bash -c "yarn -y && yarn api"
     working_dir: /usr/src/app
     volumes:
-      - ./:/usr/src/app
+      - ./catalog/:/usr/src/app
     networks:
       - store
     depends_on:
