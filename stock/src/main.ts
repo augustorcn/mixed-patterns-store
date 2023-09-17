@@ -3,6 +3,7 @@ import RepositoryDatabaseFactory from "./infra/factories/RepositoryDatabaseFacto
 import UsecaseFactory from "./infra/factories/UsecaseFactory";
 import ExpressAdapter from "./infra/http/ExpressAdapter";
 import HttpController from "./infra/http/HttpController";
+import QueueController from "./infra/queue/QueueController";
 import RabbitMQAdapter from "./infra/queue/RabbitMQAdapter";
 
 const connection = new MongoAdapter();
@@ -10,8 +11,10 @@ connection.connect();
 const repositoryFactory = new RepositoryDatabaseFactory(connection);
 const queue = new RabbitMQAdapter();
 queue.connect();
+const usecaseFactory = new UsecaseFactory(repositoryFactory);
 const httpServer = new ExpressAdapter();
-new HttpController(httpServer, new UsecaseFactory(repositoryFactory));
+new HttpController(httpServer, usecaseFactory);
 const port = 3000;
 httpServer.listen(port);
 console.info(`Stock service running in port ${port}`);
+// new QueueController(queue, usecaseFactory);
